@@ -1,9 +1,11 @@
-import ProductData from "./ProductData.mjs";
-import ProductListing from "./ProductList.mjs";
+import { loadHeaderFooter } from "./utils.mjs";
 
-const dataSource = new ProductData("tents");
-const listElement = document.querySelector(".product-list");
+async function initialize() {
+  try {
+    await loadHeaderFooter();
+  } catch (error) {
+    console.error("Error loading header and footer:", error);
+  }
+}
 
-const productList = new ProductListing("tents", dataSource, listElement);
-
-productList.init();
+initialize();
