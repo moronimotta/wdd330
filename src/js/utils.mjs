@@ -5,14 +5,31 @@ export function qs(selector, parent = document) {
 // or a more concise version if you are into that sort of thing:
 // export const qs = (selector, parent = document) => parent.querySelector(selector);
 
+const queryString = window.location.search;
+const urlParams = new URLSearchParams(queryString);
+const product = urlParams.get('product')
+
+export function getParams() {
+  return product;
+}
+
+export function renderListWithTemplate(templateFn, parentElement, list, position = "afterbegin", clear = false)
+{
+  const htmlStrings = list.map(templateFn);
+  // if clear is true we need to clear out the contents of the parent.
+  if (clear) {
+    parentElement.innerHTML = "";
+  }
+  parentElement.insertAdjacentHTML(position, htmlStrings.join(""));
+}
+
 // retrieve data from localstorage
-export function getLocalStorage(key) {
+export default function getLocalStorage(key) {
   return JSON.parse(localStorage.getItem(key));
 }
 // save data to local storage
 export function setLocalStorage(key, data) {
-  const dataArray = Array.isArray(data) ? data : [data];
-  localStorage.setItem(key, JSON.stringify(dataArray));
+  localStorage.setItem(key, JSON.stringify(data));
 }
 // set a listener for both touchend and click
 export function setClick(selector, callback) {
@@ -21,15 +38,4 @@ export function setClick(selector, callback) {
     callback();
   });
   qs(selector).addEventListener("click", callback);
-}
-
-
-export function renderListWithTemplate(templateFn, parentElement, list, position = "afterbegin", clear = false) {
-  if (clear) {
-    parentElement.innerHTML = '';
-  }
-  list.forEach(item => {
-    const element = templateFn(item);
-    parentElement.insertAdjacentHTML(position, element);
-  });
 }
