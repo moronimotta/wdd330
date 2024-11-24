@@ -12,16 +12,7 @@ export default defineConfig({
         cart: resolve(__dirname, "src/cart/index.html"),
         checkout: resolve(__dirname, "src/checkout/index.html"),
         product: resolve(__dirname, "src/product_pages/index.html"),
-          product_listing: resolve(__dirname, "src/product-listing/index.html"),
-        },
-        server: {
-          proxy: {
-            '/products': {
-              target: import.meta.env.VITE_SERVER_URL,
-              changeOrigin: true,
-              secure: false,
-            },
-          },
+        product_listing: resolve(__dirname, "src/product-listing/index.html"),
       },
     },
   },
