@@ -10,7 +10,7 @@ const baseURL = import.meta.env.VITE_SERVER_URL
 
 export default class ProductData {
   constructor(category) {
-    // this.category = category;
+    this.category = category;
     // this.path = `../json/${this.category}.json`;
   }
   async getData(category) {
