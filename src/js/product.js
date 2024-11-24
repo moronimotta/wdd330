@@ -1,18 +1,30 @@
-import { setLocalStorage } from "./utils.mjs";
+import { getParam, loadHeaderFooter } from "./utils.mjs";
 import ProductData from "./ProductData.mjs";
+import ProductDetails from "./ProductDetails.mjs";
+import getBackpackItems from "./backpack.js";
 
-const dataSource = new ProductData("tents");
+document.addEventListener("DOMContentLoaded", async () => {
+  await loadHeaderFooter();
 
-function addProductToCart(product) {
-  setLocalStorage("so-cart", product);
-}
-// add to cart button event handler
-async function addToCartHandler(e) {
-  const product = await dataSource.findProductById(e.target.dataset.id);
-  addProductToCart(product);
-}
+  const productId = getParam("product");
+  const dataSource = new ProductData();
+  const productData = await dataSource.findProductById(productId);
 
-// add listener to Add to Cart button
-document
-  .getElementById("addToCart")
-  .addEventListener("click", addToCartHandler);
+  const productDetails = new ProductDetails(productId, productData);
+  await productDetails.init();
+
+  document
+    .getElementById("addToCart")
+    .addEventListener("click", (e) => addToCartHandler(e, productDetails));
+
+
+  async function addToCartHandler(e, pDetails) {
+    const product = pDetails.dataSource;
+    pDetails.addToCart(product);
+    getBackpackItems();
+    const cartElement = document.querySelector(".cart");
+    cartElement.scrollIntoView({ behavior: "smooth" });
+  }
+
+  getBackpackItems();
+});
