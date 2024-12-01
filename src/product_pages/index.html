@@ -1,38 +1,27 @@
 <!doctype html>
-
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-    <title></title>
+    <title>Sleep Outside | Product Listing</title>
     <link rel="icon" href="../images/favicon.ico" />
-    <link rel="stylesheet" href="../css/style.css" />
-
-    <script src="../js/product.js" type="module"></script>
-    <script src="../js/backpack.js" type="module"></script>
+    <link rel="stylesheet" href="/css/style.css" />
+    <script src="../js/product-listing.js" type="module"></script>
   </head>
-
   <body>
     <header class="divider" id="main-header"></header>
-
+    <div class="breadcrumbs">breadcrumbs</div>
     <main class="divider">
-      <section class="product-detail">
-        <h3 id="product_name"></h3>
-        <h2 id="product_classification" class="divider"></h2>
-        <img class="divider" id="product_image" />
-        <p class="product__description"></p>
-        <p class="product__color"></p>
-        <div class="product-price-discount">
-          <p class="product-card__price" id="productFinalPrice"></p>
-          <p class="line-through" id="suggestedRetailPrice"></p>
-        </div>
-        <p class="product-card__price"></p>
-        <div class="product-detail__add">
-          <button id="addToCart">Add to Cart</button>
-        </div>
-        <div id="discountFlag"></div>
+      <section class="products">
+        <h2>Top Products <span class="title"></span></h2>
+        <label for="sort"
+          >Sort by
+          <select name="sort" id="sort">
+            <option value="name">Name</option>
+            <option value="price">Price</option>
+          </select>
+        </label>
+        <ul class="product-list"></ul>
       </section>
     </main>
     <footer id="main-footer"></footer>

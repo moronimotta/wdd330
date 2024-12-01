@@ -13,6 +13,15 @@ async function initialize() {
   const number_items = await dataSource.getData(category);
   breadcrumbs.innerHTML = `${myList.category}--->${number_items.length} items`;
 
+  const sorBySelect = document.querySelector("#sort");
+
+  sorBySelect.addEventListener("input", async (e) => {
+    const sortedProductsBy = e.target.value;
+    let currentList = await myList.getCurrentProductList();
+    let sortedList = await myList.sortList(currentList, sortedProductsBy);
+    myList.renderList(sortedList);
+  });
+
   myList.init();
 }
 
