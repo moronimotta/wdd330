@@ -12,6 +12,7 @@
 
   <body>
     <header class="divider" id="main-header"></header>
+    <div class="visit"></div>
     <main class="divider">
       <div class="hero">
         <img
@@ -37,6 +38,16 @@
         <h2>Top Products</h2>
         <ul class="product-list"></ul>
       </section>
+      <section class="newsletter">
+        <h2>Subscribe to our Newsletter</h2>
+        <p>Stay updated with our latest news and don't miss any promotions.</p>
+        <form action="./newsletter/success.html" method="POST">
+          <input type="text" name="name" placeholder="Enter your name" required />
+          <input type="email" name="email" placeholder="Enter your email" required />
+          <button type="submit">Subscribe</button>
+        </form>
+      </section>
+      
     </main>
     <footer id="main-footer"></footer>
   </body>

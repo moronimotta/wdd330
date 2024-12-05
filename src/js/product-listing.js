@@ -1,11 +1,28 @@
-import ProductData from "./ProductData.mjs";
+import ExternalServices from "./ExternalServices.mjs";
 import ProductList from "./ProductList.mjs";
 import { loadHeaderFooter, getParam } from "./utils.mjs";
 
-loadHeaderFooter();
+async function initialize() {
+  await loadHeaderFooter();
+  const category = getParam("category");
+  const dataSource = new ExternalServices();
+  const listElement = document.querySelector(".product-list");
+  const myList = new ProductList(category, dataSource, listElement);
 
-const category = getParam("category");
-const dataSource = new ProductData();
-const listElement = document.querySelector(".product-list");
-const myList = new ProductList(category, dataSource, listElement);
-myList.init();
+  const breadcrumbs = document.querySelector(".breadcrumbs");
+  const number_items = await dataSource.getData(category);
+  breadcrumbs.innerHTML = `${myList.category}--->${number_items.length} items`;
+
+  const sorBySelect = document.querySelector("#sort");
+
+  sorBySelect.addEventListener("input", async (e) => {
+    const sortedProductsBy = e.target.value;
+    let currentList = await myList.getCurrentProductList();
+    let sortedList = await myList.sortList(currentList, sortedProductsBy);
+    myList.renderList(sortedList);
+  });
+
+  myList.init();
+}
+
+initialize();

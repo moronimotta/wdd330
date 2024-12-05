@@ -24,7 +24,11 @@ export default class ShoppingCart {
   constructor(key, parentSelector) {
     this.key = key;
     this.parentSelector = parentSelector;
+    this.total = 0;
+    this.addEventListeners();   
+  }
 
+  addEventListeners() {
     document.addEventListener('click', (e) => {
       if (e.target.classList.contains('remove-btn')) {
         const itemId = e.target.getAttribute('data-id');
@@ -33,31 +37,38 @@ export default class ShoppingCart {
     });
   }
 
+  calculateCartListTotal(cartListItems) {
+    const amounts = cartListItems.map((item) => item.FinalPrice);
+    this.total = amounts.reduce((sum, item) => sum + item);
+  }
+
   renderCartContents() {
-    const cartItems = getLocalStorage(this.key) || [];
-    if (!cartItems.length) {
+    const cartListItems = getLocalStorage(this.key) || [];
+    if (!cartListItems.length) {
       document.querySelector(".product-list").innerHTML = "<p>Your cart is empty</p>";
-      document.querySelector(".cart-total").innerHTML = "<p>Total: $0.00</p>";
+      document.querySelector(".product-list-footer").classList.add("hide");
       return;
+    } else {
+      document.querySelector(".product-list-footer").classList.remove("hide");
     }
 
     const itemMap = new Map();
 
-    cartItems.forEach((item) => {
+    cartListItems.forEach((item) => {
       if (itemMap.has(item.Id)) {
         itemMap.get(item.Id).quantity += 1;
       } else {
         itemMap.set(item.Id, { ...item, quantity: 1 });
       }
     });
-
+    
     const htmlItems = [];
     itemMap.forEach((item, index) => {
       htmlItems.push(cartItemTemplate(item, index));
     });
     document.querySelector(this.parentSelector).innerHTML = htmlItems.join("");
-    const total = cartItems.reduce((acc, item) => acc + item.FinalPrice, 0);
-    document.querySelector(".cart-total").innerHTML = `<p>Total: $${total.toFixed(2)}</p>`;
+    this.calculateCartListTotal(cartListItems);
+    document.querySelector(".cart-total").innerHTML = `<p>Total: $${this.total.toFixed(2)}</p>`;
   }
 
   removeItemFromCart(itemId) {
